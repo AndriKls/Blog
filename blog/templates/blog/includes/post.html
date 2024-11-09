@@ -1,0 +1,17 @@
+{% load static %}
+
+<li>
+  <article class="post">
+    <a href="{% url "post-detail-page" "the-mountains" %}">
+      <img src="{%static "blog/images/mountains.jpg"%}" alt="Mountain Hiking"
+      />
+      <div class="post__content">
+        <h3>Matkamine mägedes</h3>
+        <p>
+          Pole midagi võrreldavat nende vaadetega, mida mägedes matkates koged! Ja ma polnud kaugeltki valmis selleks, mis juhtus,
+           kui ma vaadet nautisin!
+        </p>
+      </div>
+    </a>
+  </article>
+</li>
