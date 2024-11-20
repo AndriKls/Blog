@@ -10,6 +10,15 @@
 
 {%block content%}
 
+{%if comment_form.errors%}
+<div id="alert">
+  <h2>Saving the comment failed!</h2>
+  <p>Please check the comment form below and fix your errors.</p>
+  <a href="#comment-form">Fix</a>
+</div>
+{%endif%}
+
+
 <section id="summary">
   <h2>{{post.title}}</h2>
   <div>
@@ -17,15 +26,59 @@
     <span class="tag">{{tag.caption}}</span>
     {%endfor%}
   </div>
+<form action="{%url "read-later"%}" method="POST">
+  {%csrf_token%}
+  <div id="read-later">
+    <input type="hidden" value="{{post.id}}" name="post_id">
+    <button>
+      {%if saved_for_later%}
+      Eemalda "Salvestatud postituste" Nimekirjast
+      {%else%}
+      Loe Hiljem
+      {%endif%}
+    </button>
+  </div>
+</form>
   <article>
-    <img src="{% static 'blog/images/' %}{{ post.image_name }}" alt="{{post.title}}" />
+    <img src="{{ post.image.url }}" alt="{{post.title}}" />
     <address><a href="mailto: {{post.author.email_address}}">{{post.author}}</a></address>
     <div>Viimase uuenduse kuupäev <time>{{ post.Date|date:"d M Y"}}</time></div>
   </article>
 </section>
 
+
+
 <main>
   {{post.content|linebreaks}}
 </main>
 
-{%endblock%}
+<section id="comments">
+  <ul>
+    {% for comment in comments %}
+    <li>
+      <h2>{{ comment.user_name }}</h2>
+      <div>
+        {{ comment.text|linebreaks }}
+        <time>{{ comment.date|date:"d M Y H:i" }}</time>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section id="comment-form">
+  <h2>Sinu Kommentaar</h2>
+  <form method="post" action="{% url 'post-detail-page' post.slug %}">
+    {% csrf_token %}
+    {% for form_field in comment_form %}
+    <div class="form-control{% if form_field.errors %} invalid{% endif %}">
+      {{ form_field.label_tag }}
+      {{ form_field }}
+      {{ form_field.errors }}
+    </div>
+    {% endfor %}
+    <button>Save Comment</button>
+  </form>
+</section>
+{% endblock %}
+
