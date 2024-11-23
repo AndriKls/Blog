@@ -12,8 +12,8 @@
 
 {%if comment_form.errors%}
 <div id="alert">
-  <h2>Saving the comment failed!</h2>
-  <p>Please check the comment form below and fix your errors.</p>
+  <h2>Kommentaari salvestamine ebaõnnestus!</h2>
+  <p>Palun kontrolli kommentaari vorm üle ja paranda oma vead!</p>
   <a href="#comment-form">Fix</a>
 </div>
 {%endif%}
@@ -32,7 +32,7 @@
     <input type="hidden" value="{{post.id}}" name="post_id">
     <button>
       {%if saved_for_later%}
-      Eemalda "Salvestatud postituste" Nimekirjast
+      Eemalda "Hiljem Lugemiseks" Nimekirjast
       {%else%}
       Loe Hiljem
       {%endif%}
@@ -52,19 +52,21 @@
   {{post.content|linebreaks}}
 </main>
 
-<section id="comments">
+<section id="comments" class="comments-section">
+  <h3>Kommentaarid</h3>
   <ul>
     {% for comment in comments %}
-    <li>
-      <h2>{{ comment.user_name }}</h2>
-      <div>
-        {{ comment.text|linebreaks }}
-        <time>{{ comment.date|date:"d M Y H:i" }}</time>
+    <li class="comment-item">
+      <h4 class="comment-author">{{ comment.user_name }}</h4>
+      <div class="comment-body">
+        <p>{{ comment.text|linebreaks }}</p>
+        <time class="comment-date">{{ comment.date|date:"d M Y H:i" }}</time>
       </div>
     </li>
     {% endfor %}
   </ul>
 </section>
+
 
 <section id="comment-form">
   <h2>Sinu Kommentaar</h2>
